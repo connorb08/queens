@@ -1,0 +1,33 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "queens",
+	"main": "worker/index.ts",
+	"compatibility_date": "2025-05-06",
+	"compatibility_flags": ["nodejs_compat"],
+	"workers_dev": false,
+	"containers": [
+		{
+			"max_instances": 1,
+			"class_name": "QueensContainer",
+			"image": "./Dockerfile",
+			"instance_type": "standard"
+		}
+	],
+	"durable_objects": {
+		"bindings": [
+			{
+				"name": "CONTAINER",
+				"class_name": "QueensContainer"
+			}
+		]
+	},
+	"migrations": [
+		{
+			"tag": "v1",
+			"new_sqlite_classes": ["QueensContainer"]
+		}
+	],
+	"observability": {
+		"enabled": true
+	}
+}
