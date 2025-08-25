@@ -4,7 +4,6 @@
 		"lib": ["ESNext", "DOM"],
 		"module": "esnext",
 		"moduleResolution": "bundler",
-		"types": ["./worker-configuration.d.ts", "bun"],
 		"resolveJsonModule": true,
 		"allowJs": false,
 		"checkJs": false,
@@ -13,8 +12,9 @@
 		"allowSyntheticDefaultImports": true,
 		"forceConsistentCasingInFileNames": true,
 		"strict": true,
-		"skipLibCheck": true
+		"skipLibCheck": true,
+		"allowImportingTsExtensions": true
 	},
-	"exclude": ["test"],
-	"include": ["worker/**/*.ts", "src/**/*.ts"]
+	"exclude": ["test", "src/**/*.spec.ts"],
+	"include": ["src/**/*.ts"]
 }

@@ -1,21 +1,20 @@
-import puppeteer from "puppeteer";
+import { SolutionFactory } from "./factory.ts";
+import { PageController } from "./page-controller.ts";
+import type { QueensSolution } from "./types.ts";
 
-export async function main(): Promise<string> {
-	const browser = await puppeteer.launch({
-		headless: true,
-		defaultViewport: null,
-		executablePath: "/usr/bin/google-chrome",
-		args: ["--no-sandbox", "--disable-setuid-sandbox"],
-	});
-	const context = await browser.createBrowserContext();
-	const page = await context.newPage();
-	await page.goto("https://example.com");
-
-	const result = await page.evaluate(() => {
-		return document.title;
-	});
-	console.log(result);
-
-	await browser.close();
-	return result;
+export async function main(): Promise<QueensSolution> {
+	try {
+		const solution = await SolutionFactory({
+			pageController: await PageController(),
+		});
+		return solution;
+	} catch (error) {
+		console.error("Error finding solution:", error);
+		throw error;
+	}
 }
+
+const res = await main();
+console.log(res);
+
+// upload data to cloudflare

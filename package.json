@@ -4,17 +4,15 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"dev": "wrangler dev"
+		"dev": "node src/index.ts"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.2.2",
-		"@cloudflare/containers": "^0.0.26",
-		"@types/bun": "^1.2.20",
-		"@types/node": "^24.3.0",
+		"@sparticuz/chromium": "^138.0.2",
 		"typescript": "^5.9.2",
 		"wrangler": "^4.32.0"
 	},
 	"dependencies": {
-		"puppeteer": "^24.17.0"
+		"puppeteer-core": "^24.17.0"
 	}
 }

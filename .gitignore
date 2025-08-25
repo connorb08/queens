@@ -36,3 +36,31 @@ yarn-error.log*
 # Environment variables and secrets
 .env
 .secrets
+
+# .terraform directory (provider binaries, external module source code, etc.)
+**/.terraform/
+
+# Terraform state files (sensitive, and usually managed remotely in production)
+*.tfstate
+*.tfstate.*
+
+# Terraform variable definition files (sensitive values should not be committed)
+# If you have non-sensitive variable files, you can be more specific,
+# e.g., excluding only sensitive.tfvars
+*.tfvars
+*.auto.tfvars
+backend.conf
+
+# Terraform CLI configuration files
+.terraformrc
+terraform.rc
+
+# Crash log files
+crash.log
+crash.*.log
+
+# Sensitive files (e.g., encryption keys) - ensure these are never committed
+*.pem
+*.key
+*.pub
+
