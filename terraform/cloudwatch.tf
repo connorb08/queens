@@ -1,7 +1,7 @@
 resource "aws_cloudwatch_event_rule" "queens-cron" {
   name                = "queens-cron"
   description         = "Triggers queens-cron daily at 10am est"
-  schedule_expression = "cron(0 10 * * *)"
+  schedule_expression = "cron(0 10 * * ? *)"
 }
 
 resource "aws_cloudwatch_event_target" "queens-target" {

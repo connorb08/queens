@@ -1,0 +1,22 @@
+{
+	"extends": "./tsconfig.json",
+	"compilerOptions": {
+		"target": "esnext",
+		"lib": ["ESNext", "DOM"],
+		"types": ["./worker-configuration.d.ts"],
+		"module": "esnext",
+		"moduleResolution": "bundler",
+		"resolveJsonModule": true,
+		"allowJs": false,
+		"checkJs": false,
+		"noEmit": true,
+		"isolatedModules": true,
+		"allowSyntheticDefaultImports": true,
+		"forceConsistentCasingInFileNames": true,
+		"strict": true,
+		"skipLibCheck": true,
+		"allowImportingTsExtensions": true
+	},
+	"exclude": ["test", "src/**/*.spec.ts"],
+	"include": ["src/**/*.ts", "worker/index.ts"]
+}

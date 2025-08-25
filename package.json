@@ -4,15 +4,20 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"dev": "node src/index.ts"
+		"clean": "rm -rf dist function.zip",
+		"build": "node build.ts",
+		"dev": "node src/index.ts",
+		"deploy": "pnpm run clean && pnpm run build && cd terraform && terraform apply"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.2.2",
 		"@sparticuz/chromium": "^138.0.2",
+		"esbuild": "^0.25.9",
 		"typescript": "^5.9.2",
+		"vitest": "^3.2.4",
 		"wrangler": "^4.32.0"
 	},
 	"dependencies": {
-		"puppeteer-core": "^24.17.0"
+		"puppeteer-core": "24.7.2"
 	}
 }

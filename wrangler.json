@@ -1,9 +1,8 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
-	"name": "queens",
+	"name": "queens-mq",
 	"main": "worker/index.ts",
 	"compatibility_date": "2025-05-06",
-	"compatibility_flags": ["nodejs_compat"],
 	"workers_dev": false,
 	"services": [
 		{
@@ -12,6 +11,15 @@
 			"entrypoint": "Entrypoint"
 		}
 	],
+	"queues": {
+		"consumers": [
+			{
+				"queue": "queens-queue",
+				"max_batch_size": 10,
+				"max_batch_timeout": 5
+			}
+		]
+	},
 	"observability": {
 		"enabled": true
 	}

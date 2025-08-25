@@ -1,7 +1,7 @@
 # Bun-specific
 .bun/
 bun.lockb
-node_modules/ # Bun can use node_modules, so it's often included
+node_modules
 
 # Build artifacts
 dist/
@@ -19,9 +19,6 @@ yarn-error.log*
 .idea/
 *.swp
 *.bak
-
-# Node.js modules
-/node_modules
 
 # Build output
 /dist
@@ -50,6 +47,8 @@ yarn-error.log*
 *.tfvars
 *.auto.tfvars
 backend.conf
+
+*.zip
 
 # Terraform CLI configuration files
 .terraformrc

@@ -1,20 +1,19 @@
 import { SolutionFactory } from "./factory.ts";
 import { PageController } from "./page-controller.ts";
-import type { QueensSolution } from "./types.ts";
+import { PublishMessage } from "./publish.ts";
 
-export async function main(): Promise<QueensSolution> {
+export async function main(): Promise<void> {
 	try {
 		const solution = await SolutionFactory({
 			pageController: await PageController(),
 		});
-		return solution;
+		console.log(solution);
+		const response = await PublishMessage(solution);
+		console.log(response);
 	} catch (error) {
 		console.error("Error finding solution:", error);
 		throw error;
 	}
 }
-
-const res = await main();
-console.log(res);
 
 // upload data to cloudflare

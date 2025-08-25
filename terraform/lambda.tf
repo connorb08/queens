@@ -15,6 +15,16 @@ resource "aws_lambda_function" "queens" {
   role          = aws_iam_role.queens-lambda-execution.arn
   handler       = "index.main"
   runtime       = "nodejs22.x"
+  memory_size = 4096
+  timeout = 120
+
+  environment {
+    variables = {
+      QUEUE_ID = cloudflare_queue.queens-queue.id
+      CLOUDFLARE_API_TOKEN = var.cloudflare-api-token
+      CLOUDFLARE_ACCOUNT_ID = var.cloudflare-account-id
+    }
+  }
 
   layers = [aws_lambda_layer_version.chromium-layer.arn]
 

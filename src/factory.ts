@@ -14,11 +14,13 @@ const SolutionFactory = async ({
 }: {
 	pageController: IPageController;
 }): Promise<QueensSolution> => {
-	// logger.debug("Starting SolutionFactory");
 	const graph = new Graph();
-	await pageController.start();
-	await pageController.constructGraph(graph);
-	await pageController.dispose();
+	try {
+		await pageController.start();
+		await pageController.constructGraph(graph);
+	} finally {
+		await pageController[Symbol.asyncDispose]();
+	}
 	return graph.findSolution();
 };
 

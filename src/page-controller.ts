@@ -10,6 +10,10 @@ import type { Graph } from "./graph.ts";
 
 const ariaLabelRegex = /of color\s*([^,]+)/i;
 
+function delay(time: number) {
+	return new Promise((resolve) => setTimeout(resolve, time));
+}
+
 async function PageController(): Promise<IPageController> {
 	// #region Setup
 
@@ -22,26 +26,61 @@ async function PageController(): Promise<IPageController> {
 
 	// #region Methods
 	async function start(): Promise<void> {
+		console.log("starting...");
 		browser = await launch({
 			headless: true,
+			args: [
+				...chromium.args.filter((arg) => arg !== "--single-process"),
+				"--no-sandbox",
+				"--disable-setuid-sandbox",
+				"--disable-dev-shm-usage",
+				"--disable-gpu",
+				"--no-zygote",
+				"--disable-web-security",
+				"--disable-features=IsolateOrigins,site-per-process",
+				"--disable-site-isolation-trials",
+				"--disable-features=site-per-process",
+				"--disable-accelerated-2d-canvas",
+				"--disable-background-timer-throttling",
+				"--disable-backgrounding-occluded-windows",
+				"--disable-renderer-backgrounding",
+				"--disable-features=TranslateUI",
+				"--disable-ipc-flooding-protection",
+				"--disable-default-apps",
+				"--window-size=1920,1080",
+			],
 			executablePath: await chromium.executablePath(),
-			args: ["--no-sandbox", "--disable-setuid-sandbox"],
 			defaultViewport: { width: 1280, height: 720 },
+			// ignoreDefaultArgs: ["--enable-automation"],
+			// protocolTimeout: 120000, // Increase protocol timeout
 		});
+
+		await delay(1000);
+
 		context = await browser.createBrowserContext({
 			downloadBehavior: {
 				policy: "deny",
 			},
-			// userAgent:
-			// 	"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-			// viewport: { width: 1280, height: 720 },
-			// ignoreHTTPSErrors: true,
 		});
 
+		console.log("opening new page...");
 		page = await context.newPage();
-		page.setUserAgent(config.userAgent);
-		await page.goto(url);
+		await delay(1000);
+		console.log("new page opened...");
+		console.log("setting user agent...");
+		await page.setUserAgent(config.userAgent);
+		await delay(1000);
+		console.log("user agent set...");
+		console.log("going to page url...");
+		await page.goto(url, {
+			waitUntil: ["domcontentloaded", "networkidle2"],
+		});
+		console.log("page opened...");
+		console.log("clicking button...");
+		await page.waitForSelector("#launch-footer-start-button");
+
 		await page.locator("#launch-footer-start-button").click();
+		console.log("clicked...");
 	}
 
 	async function constructGraph(graph: Graph): Promise<void> {
@@ -105,10 +144,6 @@ async function PageController(): Promise<IPageController> {
 
 	// #region Dispose
 
-	function dispose() {
-		(async () => await disposeAsync())();
-	}
-
 	async function disposeAsync(): Promise<void> {
 		page = null;
 		if (context) {
@@ -128,8 +163,6 @@ async function PageController(): Promise<IPageController> {
 	return {
 		start,
 		constructGraph,
-		dispose: disposeAsync,
-		[Symbol.dispose]: dispose,
 		[Symbol.asyncDispose]: disposeAsync,
 	};
 
@@ -141,7 +174,5 @@ export { PageController };
 export type IPageController = {
 	start(): Promise<void>;
 	constructGraph(graph: Graph): Promise<void>;
-	dispose(): Promise<void>;
-	[Symbol.dispose](): void;
 	[Symbol.asyncDispose](): Promise<void>;
 };

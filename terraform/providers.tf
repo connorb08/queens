@@ -15,10 +15,18 @@ terraform {
       source  = "hashicorp/aws"
       version = "6.10.0"
     }
+    cloudflare = {
+      source  = "cloudflare/cloudflare"
+      version = "~> 5"
+    }
   }
 
 }
 
 provider "aws" {
   region = "us-east-2"
+}
+
+provider "cloudflare" {
+  api_token = var.cloudflare-api-token
 }
